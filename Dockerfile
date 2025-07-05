@@ -31,7 +31,7 @@ RUN apt-get update && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Copy built JAR from Stage 1
-COPY --from=builder /app/target/demo-ai-chatbot-*.jar app.jar
+COPY --from=builder /app/target/ai-chatbot-demo-0.0.1-SNAPSHOT.jar app.jar
 
 # Expose port 8080
 EXPOSE 8080
