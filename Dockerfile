@@ -6,12 +6,17 @@ WORKDIR /app
 # Pre-cache Maven dependencies
 COPY .mvn .mvn
 COPY mvnw pom.xml ./
+
+# ✅ Fix mvnw permission issue
+RUN chmod +x mvnw
+
+# Fetch dependencies
 RUN ./mvnw dependency:go-offline
 
 # Copy rest of the source code
 COPY src ./src
 
-# Build the JAR
+# Build the JAR (Vaadin prod mode)
 ENV VAADIN_PRODUCTIONMODE=true
 RUN ./mvnw clean package -Pproduction -DskipTests
 
@@ -20,16 +25,16 @@ FROM eclipse-temurin:17-jdk-jammy
 
 WORKDIR /app
 
-# Install Redis CLI (optional if used only externally)
+# Optional: Install Redis CLI
 RUN apt-get update && \
     apt-get install -y redis-tools && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Copy JAR from builder stage
+# Copy built JAR from Stage 1
 COPY --from=builder /app/target/demo-ai-chatbot-*.jar app.jar
 
-# Expose app port
+# Expose port 8080
 EXPOSE 8080
 
-# Run the app
+# Run app
 ENTRYPOINT ["java", "-jar", "app.jar"]
