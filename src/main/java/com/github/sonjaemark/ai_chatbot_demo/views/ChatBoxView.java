@@ -76,7 +76,7 @@ public class ChatBoxView extends Div {
             chatHistory.getElement().setProperty("innerHTML",
                     chatHistory.getElement().getProperty("innerHTML") +
                             "<p><strong style='color:blue;'>You:</strong> " + escapeHtml(prompt) + "</p>" +
-                            "<p><strong style='color:green;'>Gemini:</strong> " + escapeHtml(geminiAnswer) + "</p>"
+                            "<p><strong style='color:green;'>AI Assistant:</strong> " + escapeHtml(geminiAnswer) + "</p>"
             );
 
             userPrompt.clear();
